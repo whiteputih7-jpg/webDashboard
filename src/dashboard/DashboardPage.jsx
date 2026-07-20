@@ -40,6 +40,7 @@ export default function DashboardPage({ activeMenu }) {
   const doneTasks = tasks.filter(t => t.done);
 
   const showHistory = activeMenu === 'history';
+  const filteredProjects = projects;
 
   if (activeMenu === 'history' && doneTasks.length === 0) {
     return (
