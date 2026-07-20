@@ -65,17 +65,19 @@ export default function DashboardPage({ activeMenu }) {
       {/* Toolbar */}
       <Group mb="lg" justify="space-between">
         <Group>
-          <Button
-            leftSection={<IconPlus size={18} />}
-            color="blue"
-            size="md"
-            onClick={() => setModalOpened(true)}
-          >
-            Project Baru
-          </Button>
+          {activeMenu === 'projects' && (
+            <Button
+              leftSection={<IconPlus size={18} />}
+              color="blue"
+              size="md"
+              onClick={() => setModalOpened(true)}
+            >
+              Project Baru
+            </Button>
+          )}
           {!showHistory && (
             <Text size="sm" c="dimmed">
-              {activeTasks.length} task aktif
+              {activeMenu === 'projects' ? `${projects.length} project` : `${activeTasks.length} task aktif`}
             </Text>
           )}
         </Group>
