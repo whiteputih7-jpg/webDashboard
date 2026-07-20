@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
 import { Group, TextInput, ActionIcon, FileButton } from '@mantine/core';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { storage, db } from '../firebase';
+import { db } from '../firebase';
 import { useAuth } from '../auth/AuthProvider';
+
+const CLOUD_NAME = 's5izhmy9';
+const UPLOAD_PRESET = 'webdashboard';
 
 export default function AddTaskForm({ projectId, onAdded }) {
   const [text, setText] = useState('');
@@ -41,10 +43,20 @@ export default function AddTaskForm({ projectId, onAdded }) {
     if (!file) return;
     setUploading(true);
     try {
-      const storageRef = ref(storage, `tasks/${projectId}/${Date.now()}_${file.name}`);
-      const snapshot = await uploadBytesResumable(storageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
-      await handleSubmit(url);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', UPLOAD_PRESET);
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.secure_url) {
+        await handleSubmit(data.secure_url);
+      } else {
+        console.error('Cloudinary error:', data);
+      }
     } catch (err) {
       console.error(err);
     }
