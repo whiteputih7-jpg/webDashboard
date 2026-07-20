@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AppShell, Group, Text, Burger } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import { useAuth } from '../auth/AuthProvider';
 import Sidebar from './Sidebar';
 import HeaderBar from './HeaderBar';
@@ -8,9 +8,11 @@ export default function AppShellLayout({ children, activeMenu, onNavigate }) {
   const [collapsed, setCollapsed] = useState(false);
   const { user, logout } = useAuth();
 
+  const sidebarW = collapsed ? 64 : 240;
+
   return (
     <AppShell
-      navbar={{ width: collapsed ? 64 : 240, breakpoint: 768 }}
+      navbar={{ width: sidebarW, breakpoint: 768 }}
       header={{ height: 56 }}
       padding={0}
     >
@@ -37,7 +39,7 @@ export default function AppShellLayout({ children, activeMenu, onNavigate }) {
         style={{
           background: '#fff',
           borderRight: '3px solid #000',
-          paddingTop: 8,
+          paddingTop: 0,
         }}
       >
         <Sidebar
@@ -52,7 +54,7 @@ export default function AppShellLayout({ children, activeMenu, onNavigate }) {
         style={{
           background: '#F5F5DC',
           minHeight: '100vh',
-          padding: 24,
+          padding: '32px 40px',
         }}
       >
         {children}

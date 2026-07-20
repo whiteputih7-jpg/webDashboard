@@ -95,3 +95,8 @@ body {
 .mantine-AppShell-main {
   background: var(--brutal-beige) !important;
 }
+
+/* Sidebar background */
+.mantine-AppShell-navbar {
+  background: #fff !important;
+}

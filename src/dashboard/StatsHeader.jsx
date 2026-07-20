@@ -30,51 +30,50 @@ export default function StatsHeader({ projectCount, activeTaskCount, urgentCount
       {stats.map((item) => {
         const Icon = item.icon;
         return (
-          <Paper
+          <Box
             key={item.key}
-            p="lg"
             style={{
               border: '3px solid #000',
-              borderRadius: 0,
               background: '#fff',
-              boxShadow: '5px 5px 0px 0px #000',
+              padding: '20px 24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 16,
             }}
           >
-            <Group justify="space-between" align="flex-start" wrap="nowrap">
-              <Box style={{ flex: 1 }}>
-                <Text
-                  size="xs"
-                  c="#000"
-                  tt="uppercase"
-                  fw={800}
-                  mb={4}
-                  style={{ letterSpacing: 0.5 }}
-                >
-                  {item.label}
-                </Text>
-                <Text
-                  style={{ fontSize: 42, lineHeight: 1, fontWeight: 900 }}
-                  c="#000"
-                >
-                  {values[item.key]}
-                </Text>
-              </Box>
-              <Box
-                style={{
-                  background: item.color,
-                  border: '3px solid #000',
-                  padding: 10,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minWidth: 52,
-                  minHeight: 52,
-                }}
+            <Box>
+              <Text
+                size="xs"
+                c="#888"
+                tt="uppercase"
+                fw={700}
+                mb={2}
               >
-                <Icon size={28} stroke={2} color="#000" />
-              </Box>
-            </Group>
-          </Paper>
+                {item.label}
+              </Text>
+              <Text
+                style={{ fontSize: 40, lineHeight: 1.1, fontWeight: 900 }}
+                c="#000"
+              >
+                {values[item.key]}
+              </Text>
+            </Box>
+            <Box
+              style={{
+                background: item.color,
+                border: '3px solid #000',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <Icon size={24} stroke={2} color="#000" />
+            </Box>
+          </Box>
         );
       })}
     </SimpleGrid>
