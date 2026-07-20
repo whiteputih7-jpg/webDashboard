@@ -1,25 +1,22 @@
-import { Group, Paper, Text, SimpleGrid } from '@mantine/core';
+import { Group, Paper, Text, SimpleGrid, Box } from '@mantine/core';
 import { IconFolder, IconChecklist, IconAlertTriangle } from '@tabler/icons-react';
 
 const stats = [
   {
-    label: 'Total Project',
-    color: '#4e73df',
-    bg: '#e8ecfc',
+    label: 'TOTAL PROJECT',
+    color: '#00E5FF',
     icon: IconFolder,
     key: 'projectCount',
   },
   {
-    label: 'Task Aktif',
-    color: '#1cc88a',
-    bg: '#e6faf2',
+    label: 'TASK AKTIF',
+    color: '#FFD600',
     icon: IconChecklist,
     key: 'activeTaskCount',
   },
   {
-    label: 'Urgent',
-    color: '#e74a3b',
-    bg: '#fde8e6',
+    label: 'URGENT',
+    color: '#FF00FF',
     icon: IconAlertTriangle,
     key: 'urgentCount',
   },
@@ -35,32 +32,47 @@ export default function StatsHeader({ projectCount, activeTaskCount, urgentCount
         return (
           <Paper
             key={item.key}
-            withBorder
-            shadow="sm"
             p="lg"
-            radius="md"
             style={{
-              borderLeft: `4px solid ${item.color}`,
-              position: 'relative',
+              border: '3px solid #000',
+              borderRadius: 0,
+              background: '#fff',
+              boxShadow: '5px 5px 0px 0px #000',
             }}
           >
-            <Group justify="space-between" align="flex-start">
-              <div>
-                <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>
+            <Group justify="space-between" align="flex-start" wrap="nowrap">
+              <Box style={{ flex: 1 }}>
+                <Text
+                  size="xs"
+                  c="#000"
+                  tt="uppercase"
+                  fw={800}
+                  mb={4}
+                  style={{ letterSpacing: 0.5 }}
+                >
                   {item.label}
                 </Text>
-                <Text style={{ fontSize: 32, lineHeight: 1 }} fw={700} c={item.color}>
+                <Text
+                  style={{ fontSize: 42, lineHeight: 1, fontWeight: 900 }}
+                  c="#000"
+                >
                   {values[item.key]}
                 </Text>
-              </div>
-              <Paper
-                bg={item.bg}
-                p="sm"
-                radius="md"
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              </Box>
+              <Box
+                style={{
+                  background: item.color,
+                  border: '3px solid #000',
+                  padding: 10,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: 52,
+                  minHeight: 52,
+                }}
               >
-                <Icon size={28} stroke={1.5} color={item.color} />
-              </Paper>
+                <Icon size={28} stroke={2} color="#000" />
+              </Box>
             </Group>
           </Paper>
         );

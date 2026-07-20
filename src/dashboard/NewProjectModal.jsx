@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Modal, TextInput, Button, Stack } from '@mantine/core';
+import { Modal, TextInput, Button, Stack, Text } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../auth/AuthProvider';
@@ -13,14 +14,13 @@ export default function NewProjectModal({ opened, onClose, onCreated }) {
     if (!name.trim()) return;
     setLoading(true);
     try {
-      const docRef = await addDoc(collection(db, 'projects'), {
+      await addDoc(collection(db, 'projects'), {
         name: name.trim(),
         createdAt: serverTimestamp(),
         createdBy: user.uid
       });
       setName('');
       onClose();
-      if (onCreated) onCreated({ id: docRef.id, name: name.trim() });
     } catch (err) {
       console.error(err);
     }
@@ -28,17 +28,40 @@ export default function NewProjectModal({ opened, onClose, onCreated }) {
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Project Baru" centered>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title="PROJECT BARU"
+      centered
+      size="sm"
+    >
       <Stack>
+        <Text fw={700} size="sm" c="#000" tt="uppercase" mb={4}>
+          NAMA PROJECT
+        </Text>
         <TextInput
-          label="Nama Project"
-          placeholder="Contoh: JC HOUSE"
+          placeholder="CONTOH: JC HOUSE"
           value={name}
           onChange={e => setName(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleCreate()}
           data-autofocus
         />
-        <Button onClick={handleCreate} loading={loading}>Buat Project</Button>
+        <Button
+          onClick={handleCreate}
+          loading={loading}
+          fullWidth
+          style={{
+            background: '#00E5FF',
+            color: '#000',
+            border: '3px solid #000',
+            boxShadow: '3px 3px 0px 0px #000',
+            fontWeight: 800,
+            height: 48,
+          }}
+        >
+          <IconPlus size={18} stroke={2} style={{ marginRight: 6 }} />
+          BUAT PROJECT
+        </Button>
       </Stack>
     </Modal>
   );

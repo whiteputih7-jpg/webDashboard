@@ -1,78 +1,91 @@
-import { Stack, Text, NavLink, Divider } from '@mantine/core';
+import { Stack, Text, NavLink, Box } from '@mantine/core';
 import { IconLayoutDashboard, IconFolder, IconHistory } from '@tabler/icons-react';
 
 const menuItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
-  { id: 'projects', label: 'Project', icon: IconFolder },
-  { id: 'history', label: 'Riwayat', icon: IconHistory },
+  { id: 'dashboard', label: 'DASHBOARD', icon: IconLayoutDashboard },
+  { id: 'projects', label: 'PROJECT', icon: IconFolder },
+  { id: 'history', label: 'RIWAYAT', icon: IconHistory },
 ];
 
 export default function Sidebar({ collapsed, activeMenu, onNavigate }) {
   return (
-    <Stack h="100%" justify="space-between">
+    <Stack h="100%" justify="space-between" gap={0}>
       <div>
         {/* Brand */}
-        <NavLink
-          label={collapsed ? null : <Text fw={700} size="lg">webDashboard</Text>}
-          leftSection={
-            <div style={{ background: '#4e73df', borderRadius: 8, padding: 6, display: 'flex' }}>
-              <IconLayoutDashboard size={20} color="white" stroke={1.5} />
-            </div>
-          }
-          disabled
-          style={{ cursor: 'default' }}
-          mb="md"
-        />
-
-        <Divider mb="md" />
+        <Box
+          px="md"
+          py="sm"
+          mb={8}
+          style={{
+            borderBottom: '3px solid #000',
+            margin: '0 8px',
+          }}
+        >
+          <Text
+            fw={900}
+            size={collapsed ? 'sm' : 'lg'}
+            tt="uppercase"
+            ta={collapsed ? 'center' : 'left'}
+            style={{ letterSpacing: 1 }}
+          >
+            {collapsed ? 'WD' : 'webDashboard'}
+          </Text>
+        </Box>
 
         {/* Menu Items */}
-        {menuItems.map(item => {
-          const Icon = item.icon;
-          const isActive = activeMenu === item.id;
-          return (
-            <NavLink
-              key={item.id}
-              label={collapsed ? null : item.label}
-              leftSection={
+        <Stack gap={2} px={8}>
+          {menuItems.map(item => {
+            const Icon = item.icon;
+            const isActive = activeMenu === item.id;
+            return (
+              <Box
+                key={item.id}
+                onClick={() => onNavigate(item.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  padding: collapsed ? '10px 0' : '10px 12px',
+                  cursor: 'pointer',
+                  background: isActive ? '#000' : 'transparent',
+                  color: isActive ? '#fff' : '#000',
+                  border: '2px solid #000',
+                  justifyContent: collapsed ? 'center' : 'flex-start',
+                  transition: 'none',
+                  userSelect: 'none',
+                }}
+              >
                 <Icon
                   size={20}
-                  stroke={1.5}
-                  color={isActive ? '#fff' : '#5a5c69'}
+                  stroke={2.5}
+                  color={isActive ? '#fff' : '#000'}
                 />
-              }
-              active={isActive}
-              onClick={() => onNavigate(item.id)}
-              styles={{
-                root: {
-                  borderRadius: 8,
-                  marginBottom: 4,
-                  padding: '8px 12px',
-                  '&:hover': {
-                    background: '#f0f2f7',
-                  },
-                  '&[data-active]': {
-                    background: '#4e73df',
-                    color: '#fff',
-                    '&:hover': { background: '#3a5fc8' },
-                  },
-                },
-                label: {
-                  fontWeight: isActive ? 600 : 400,
-                  fontSize: 14,
-                },
-              }}
-            />
-          );
-        })}
+                {!collapsed && (
+                  <Text fw={isActive ? 800 : 700} size="sm" tt="uppercase" style={{ letterSpacing: 0.5 }}>
+                    {item.label}
+                  </Text>
+                )}
+              </Box>
+            );
+          })}
+        </Stack>
       </div>
 
       {/* Version */}
       {!collapsed && (
-        <Stack align="center" pb="md">
-          <Divider w="100%" />
-          <Text size="xs" c="dimmed">v1.0.0</Text>
-        </Stack>
+        <Box pb="md" px="md">
+          <Box
+            style={{
+              borderTop: '2px solid #000',
+              paddingTop: 12,
+              textAlign: 'center',
+            }}
+          >
+            <Text size="xs" fw={700} tt="uppercase" c="dimmed">
+              v1.0.0
+            </Text>
+          </Box>
+        </Box>
       )}
     </Stack>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Paper, Title, Group, ActionIcon, Text } from '@mantine/core';
+import { Box, Title, Group, ActionIcon, Text } from '@mantine/core';
+import { IconTrash } from '@tabler/icons-react';
 import { query, where, orderBy, onSnapshot, doc, deleteDoc, updateDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 import TaskItem from './TaskItem';
@@ -43,31 +44,76 @@ export default function ProjectCard({ project, onDelete }) {
   const urgentCount = activeTasks.filter(t => t.urgent).length;
 
   return (
-    <Paper withBorder shadow="sm" p="sm" radius="md" style={{ minWidth: 280, maxWidth: 320, flex: 1 }}>
-      <Group justify="space-between" mb="xs">
-        <Group gap={4}>
-          <Title order={5}>{project.name}</Title>
-          {urgentCount > 0 && <Text c="red" size="xs" fw={700}>{'🔴'.repeat(urgentCount)}</Text>}
+    <Box
+      style={{
+        border: '3px solid #000',
+        background: '#fff',
+        minWidth: 300,
+        maxWidth: 340,
+        flex: 1,
+        boxShadow: '4px 4px 0px 0px #000',
+      }}
+    >
+      {/* Header Card */}
+      <Group
+        justify="space-between"
+        p="sm"
+        style={{
+          borderBottom: '3px solid #000',
+          background: urgentCount > 0 ? '#FF00FF' : '#fff',
+        }}
+      >
+        <Group gap={6}>
+          <Title order={5} fw={800} tt="uppercase" c={urgentCount > 0 ? '#fff' : '#000'}>
+            {project.name}
+          </Title>
+          {urgentCount > 0 && (
+            <Box
+              style={{
+                background: '#FFD600',
+                border: '2px solid #000',
+                padding: '2px 6px',
+              }}
+            >
+              <Text fw={800} size="xs" c="#000">
+                🔴 {urgentCount}
+              </Text>
+            </Box>
+          )}
         </Group>
-        <ActionIcon size="sm" color="red" variant="subtle" onClick={() => onDelete(project.id)}>
-          ✕
+        <ActionIcon
+          size="sm"
+          color="dark"
+          variant="subtle"
+          onClick={() => onDelete(project.id)}
+          style={{ border: '2px solid #000', borderRadius: 0 }}
+        >
+          <IconTrash size={14} stroke={2} />
         </ActionIcon>
       </Group>
 
-      {tasks.length === 0 && (
-        <Text size="sm" c="dimmed" ta="center" py="md">Belum ada task.</Text>
-      )}
+      {/* Task List */}
+      <Box p="sm">
+        {tasks.length === 0 && (
+          <Text fw={700} size="sm" c="#000" ta="center" py="md">
+            BELUM ADA TASK.
+          </Text>
+        )}
 
-      {tasks.map(task => (
-        <TaskItem
-          key={task.id}
-          task={task}
-          onToggle={handleToggle}
-          onDelete={handleDeleteTask}
-        />
-      ))}
+        {tasks.map(task => (
+          <TaskItem
+            key={task.id}
+            task={task}
+            onToggle={handleToggle}
+            onDelete={handleDeleteTask}
+          />
+        ))}
+      </Box>
 
-      <AddTaskForm projectId={project.id} />
-    </Paper>
+      {/* Add Task Form */}
+      <Box style={{ borderTop: '2px solid #000' }}>
+        <AddTaskForm projectId={project.id} />
+      </Box>
+    </Box>
   );
 }

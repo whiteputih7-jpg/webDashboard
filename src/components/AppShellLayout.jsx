@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { AppShell } from '@mantine/core';
+import { AppShell, Group, Text, Burger } from '@mantine/core';
 import { useAuth } from '../auth/AuthProvider';
 import Sidebar from './Sidebar';
 import HeaderBar from './HeaderBar';
-
-const mainBg = '#f5f7fb';
 
 export default function AppShellLayout({ children, activeMenu, onNavigate }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -12,13 +10,19 @@ export default function AppShellLayout({ children, activeMenu, onNavigate }) {
 
   return (
     <AppShell
-      navbar={{ width: collapsed ? 60 : 250, breakpoint: 768, collapsed: { desktop: false } }}
-      header={{ height: 60 }}
-      padding="md"
-      style={{ background: mainBg }}
+      navbar={{ width: collapsed ? 64 : 240, breakpoint: 768 }}
+      header={{ height: 56 }}
+      padding={0}
     >
       {/* Header */}
-      <AppShell.Header style={{ background: 'linear-gradient(135deg, #4e73df 0%, #224abe 100%)', border: 'none' }}>
+      <AppShell.Header
+        style={{
+          background: '#000',
+          border: 'none',
+          borderBottom: '3px solid #000',
+          height: 56,
+        }}
+      >
         <HeaderBar
           user={user}
           collapsed={collapsed}
@@ -28,7 +32,14 @@ export default function AppShellLayout({ children, activeMenu, onNavigate }) {
       </AppShell.Header>
 
       {/* Sidebar */}
-      <AppShell.Navbar p="xs" style={{ background: '#fff', borderRight: '1px solid #e3e6f0' }}>
+      <AppShell.Navbar
+        p={0}
+        style={{
+          background: '#fff',
+          borderRight: '3px solid #000',
+          paddingTop: 8,
+        }}
+      >
         <Sidebar
           collapsed={collapsed}
           activeMenu={activeMenu}
@@ -37,7 +48,13 @@ export default function AppShellLayout({ children, activeMenu, onNavigate }) {
       </AppShell.Navbar>
 
       {/* Content */}
-      <AppShell.Main style={{ background: mainBg, minHeight: '100vh' }}>
+      <AppShell.Main
+        style={{
+          background: '#F5F5DC',
+          minHeight: '100vh',
+          padding: 24,
+        }}
+      >
         {children}
       </AppShell.Main>
     </AppShell>

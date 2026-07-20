@@ -9,27 +9,142 @@ import LoginPage from './auth/LoginPage';
 import DashboardPage from './dashboard/DashboardPage';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import './neo-style.css';
 
 const theme = createTheme({
+  defaultRadius: 0,
   fontFamily: "'Inter', 'Segoe UI', -apple-system, sans-serif",
-  defaultRadius: 'md',
-  primaryColor: 'blue',
-  primaryShade: 6,
+  primaryColor: 'brutalTeal',
   colors: {
-    blue: [
-      '#e8ecfc', '#d1d9f8', '#a3b3f1', '#758dea', '#4767e3',
-      '#224abe', '#1a3a9e', '#132a7e', '#0c1a5e', '#060a3e'
-    ],
+    brutalTeal: ['#e6ffff', '#b3f5ff', '#80ebff', '#4de0ff', '#00E5FF', '#00ccd6', '#00b3ad', '#009985', '#00805c', '#006633'],
   },
-  shadows: {
-    sm: '0 1px 3px rgba(0,0,0,0.08)',
-    md: '0 4px 12px rgba(0,0,0,0.1)',
-    lg: '0 8px 24px rgba(0,0,0,0.12)',
+  headings: {
+    fontWeight: '900',
   },
   components: {
     Paper: {
       defaultProps: {
-        shadow: 'sm',
+        withBorder: true,
+        shadow: 'none',
+      },
+      styles: {
+        root: {
+          border: '3px solid #000',
+          borderRadius: 0,
+        },
+      },
+    },
+    Button: {
+      defaultProps: {
+        radius: 0,
+      },
+      styles: {
+        root: {
+          border: '3px solid #000',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+          fontSize: 14,
+          height: 44,
+          padding: '0 24px',
+          transition: 'none',
+          '&:hover': {
+            transform: 'translate(-2px, -2px)',
+            boxShadow: '4px 4px 0px 0px #000',
+          },
+        },
+      },
+    },
+    TextInput: {
+      defaultProps: { radius: 0 },
+      styles: {
+        input: {
+          border: '3px solid #000',
+          borderRadius: 0,
+          fontWeight: 600,
+          '&:focus': {
+            borderColor: '#000',
+            outline: '4px solid #00E5FF',
+            outlineOffset: 0,
+          },
+        },
+        label: {
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          fontSize: 12,
+          marginBottom: 4,
+        },
+      },
+    },
+    PasswordInput: {
+      styles: {
+        input: {
+          border: '3px solid #000',
+          borderRadius: 0,
+          '&:focus': {
+            borderColor: '#000',
+            outline: '4px solid #00E5FF',
+            outlineOffset: 0,
+          },
+        },
+        label: {
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          fontSize: 12,
+          marginBottom: 4,
+        },
+      },
+    },
+    Modal: {
+      styles: {
+        content: {
+          border: '3px solid #000',
+          borderRadius: 0,
+          boxShadow: '7px 7px 0px 0px #000',
+        },
+        header: {
+          borderBottom: '3px solid #000',
+          padding: '16px 20px',
+        },
+        title: {
+          fontWeight: 800,
+          fontSize: 20,
+          textTransform: 'uppercase',
+        },
+        body: {
+          padding: 20,
+        },
+      },
+    },
+    Checkbox: {
+      styles: {
+        input: {
+          border: '3px solid #000',
+          borderRadius: 0,
+          '&:checked': {
+            background: '#00E5FF',
+            borderColor: '#000',
+          },
+        },
+      },
+    },
+    NavLink: {
+      styles: {
+        root: {
+          borderRadius: 0,
+          borderLeft: '4px solid transparent',
+        },
+      },
+    },
+    ScrollArea: {
+      styles: {
+        root: {
+          '& .mantine-ScrollArea-viewport': {
+            '& > div': {
+              display: 'flex !important',
+            },
+          },
+        },
       },
     },
   },

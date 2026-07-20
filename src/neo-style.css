@@ -1,0 +1,97 @@
+/* Neo-Brutalist Design System */
+/* Bold. Loud. Systematic. Usable. */
+
+:root {
+  --brutal-black: #000000;
+  --brutal-white: #ffffff;
+  --brutal-beige: #F5F5DC;
+  --brutal-teal: #00E5FF;
+  --brutal-magenta: #FF00FF;
+  --brutal-yellow: #FFD600;
+  --brutal-stroke: 3px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--brutal-beige);
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Brutal Typography --- */
+.brutal-h1 {
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--brutal-black);
+}
+
+.brutal-h2 {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.brutal-h3 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.brutal-body {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.brutal-caption {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- Brutal Border Helper --- */
+.brutal-border {
+  border: var(--brutal-stroke) solid var(--brutal-black);
+}
+
+.brutal-border-bottom {
+  border-bottom: var(--brutal-stroke) solid var(--brutal-black);
+}
+
+.brutal-border-right {
+  border-right: var(--brutal-stroke) solid var(--brutal-black);
+}
+
+/* --- Brutal Shadow --- */
+.brutal-shadow-1 {
+  box-shadow: 4px 4px 0px 0px var(--brutal-black);
+}
+
+.brutal-shadow-2 {
+  box-shadow: 7px 7px 0px 0px var(--brutal-black);
+}
+
+/* --- Brutal Colors --- */
+.brutal-bg-teal { background: var(--brutal-teal); }
+.brutal-bg-magenta { background: var(--brutal-magenta); }
+.brutal-bg-yellow { background: var(--brutal-yellow); }
+.brutal-bg-black { background: var(--brutal-black); }
+.brutal-bg-white { background: var(--brutal-white); }
+.brutal-bg-beige { background: var(--brutal-beige); }
+
+.brutal-text-teal { color: var(--brutal-teal); }
+.brutal-text-magenta { color: var(--brutal-magenta); }
+.brutal-text-yellow { color: var(--brutal-yellow); }
+.brutal-text-white { color: var(--brutal-white); }
+.brutal-text-black { color: var(--brutal-black); }
+
+/* --- Mantine Overrides --- */
+.mantine-AppShell-main {
+  background: var(--brutal-beige) !important;
+}
