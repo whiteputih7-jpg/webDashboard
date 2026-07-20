@@ -92,11 +92,21 @@ body {
 .brutal-text-black { color: var(--brutal-black); }
 
 /* --- Mantine Overrides --- */
+.mantine-AppShell-root {
+  --app-shell-navbar-width: 240px !important;
+}
+
 .mantine-AppShell-main {
   background: var(--brutal-beige) !important;
+  padding-inline-start: calc(var(--app-shell-navbar-width, 240px) + 40px) !important;
+  padding-inline-end: 40px !important;
+  padding-top: calc(56px + 32px) !important;
+  padding-bottom: 32px !important;
 }
 
 /* Sidebar background */
 .mantine-AppShell-navbar {
   background: #fff !important;
+  top: 56px !important;
+  height: calc(100vh - 56px) !important;
 }
