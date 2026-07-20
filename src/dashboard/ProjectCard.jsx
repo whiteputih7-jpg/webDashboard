@@ -48,65 +48,53 @@ export default function ProjectCard({ project, onDelete }) {
       style={{
         border: '3px solid #000',
         background: '#fff',
-        minWidth: 300,
-        maxWidth: 340,
-        flex: 1,
-        boxShadow: '4px 4px 0px 0px #000',
+        minWidth: 280,
+        maxWidth: 320,
+        width: 300,
+        flexShrink: 0,
       }}
     >
       {/* Header Card */}
       <Group
         justify="space-between"
-        p="sm"
+        px="sm"
+        py={10}
         style={{
           borderBottom: '3px solid #000',
-          background: urgentCount > 0 ? '#FF00FF' : '#fff',
+          background: urgentCount > 0 ? '#FF00FF' : '#f0f0f0',
         }}
       >
         <Group gap={6}>
-          <Title order={5} fw={800} tt="uppercase" c={urgentCount > 0 ? '#fff' : '#000'}>
+          <Title order={6} fw={800} tt="uppercase" c={urgentCount > 0 ? '#fff' : '#000'} style={{ fontSize: 14 }}>
             {project.name}
           </Title>
           {urgentCount > 0 && (
-            <Box
-              style={{
-                background: '#FFD600',
-                border: '2px solid #000',
-                padding: '2px 6px',
-              }}
-            >
-              <Text fw={800} size="xs" c="#000">
-                🔴 {urgentCount}
-              </Text>
+            <Box style={{ background: '#FFD600', border: '2px solid #000', padding: '1px 6px' }}>
+              <Text fw={800} size="xs" c="#000">🔴 {urgentCount}</Text>
             </Box>
           )}
         </Group>
         <ActionIcon
           size="sm"
-          color="dark"
           variant="subtle"
+          color="dark"
           onClick={() => onDelete(project.id)}
-          style={{ border: '2px solid #000', borderRadius: 0 }}
+          style={{ border: '2px solid #000', borderRadius: 0, minWidth: 28, height: 28 }}
         >
           <IconTrash size={14} stroke={2} />
         </ActionIcon>
       </Group>
 
       {/* Task List */}
-      <Box p="sm">
+      <Box px="sm" py={8}>
         {tasks.length === 0 && (
-          <Text fw={700} size="sm" c="#000" ta="center" py="md">
-            BELUM ADA TASK.
+          <Text fw={700} size="xs" c="#888" ta="center" py="md">
+            BELUM ADA TASK
           </Text>
         )}
 
         {tasks.map(task => (
-          <TaskItem
-            key={task.id}
-            task={task}
-            onToggle={handleToggle}
-            onDelete={handleDeleteTask}
-          />
+          <TaskItem key={task.id} task={task} onToggle={handleToggle} onDelete={handleDeleteTask} />
         ))}
       </Box>
 
