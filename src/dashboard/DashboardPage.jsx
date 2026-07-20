@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Group, Button, Text, ScrollArea, Container } from '@mantine/core';
+import { Group, Button, Text, ScrollArea, SimpleGrid, Box } from '@mantine/core';
+import { IconPlus, IconHistory } from '@tabler/icons-react';
 import { collection, query, orderBy, onSnapshot, doc, deleteDoc, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import StatsHeader from './StatsHeader';
@@ -44,14 +45,14 @@ export default function DashboardPage({ activeMenu }) {
 
   if (activeMenu === 'history' && doneTasks.length === 0) {
     return (
-      <Container>
+      <Box py="xl">
         <Text ta="center" c="dimmed" py="xl">Belum ada task yang selesai.</Text>
-      </Container>
+      </Box>
     );
   }
 
   return (
-    <div>
+    <Box>
       {/* Stats */}
       {!showHistory && (
         <StatsHeader
@@ -62,33 +63,48 @@ export default function DashboardPage({ activeMenu }) {
       )}
 
       {/* Toolbar */}
-      <Group mb="md">
-        <Button leftSection="+" color="blue" onClick={() => setModalOpened(true)}>
-          Project Baru
-        </Button>
-        <Text size="sm" c="dimmed">
-          {showHistory
-            ? `Task Selesai (${doneTasks.length})`
-            : `${activeTasks.length} task aktif`}
-        </Text>
-        <Text size="xs" c="dimmed" style={{ marginLeft: 'auto' }}>
-          sync {new Date().toLocaleTimeString('id-ID')}
-        </Text>
+      <Group mb="lg" justify="space-between">
+        <Group>
+          <Button
+            leftSection={<IconPlus size={18} />}
+            color="blue"
+            size="md"
+            onClick={() => setModalOpened(true)}
+          >
+            Project Baru
+          </Button>
+          {!showHistory && (
+            <Text size="sm" c="dimmed">
+              {activeTasks.length} task aktif
+            </Text>
+          )}
+        </Group>
+        {showHistory && (
+          <Text size="sm" c="dimmed">
+            <IconHistory size={16} style={{ verticalAlign: 'middle', marginRight: 4 }} />
+            Task Selesai ({doneTasks.length})
+          </Text>
+        )}
       </Group>
 
       {/* Content */}
       {showHistory ? (
-        <div>
+        <Box>
           <Text fw={600} mb="sm" size="lg">Riwayat Selesai</Text>
           {doneTasks.slice(0, 50).map(t => (
             <Text key={t.id} size="sm" c="dimmed" style={{ textDecoration: 'line-through' }} mb={4}>
               {t.text} — <Text span c="gray">{projects.find(p => p.id === t.projectId)?.name || '?'}</Text>
             </Text>
           ))}
-        </div>
+        </Box>
+      ) : filteredProjects.length === 0 ? (
+        <Box ta="center" py="xl">
+          <Text c="dimmed" size="lg">Belum ada project.</Text>
+          <Text c="dimmed" size="sm" mt={4}>Klik "Project Baru" untuk memulai.</Text>
+        </Box>
       ) : (
-        <ScrollArea>
-          <Group gap="md" wrap="nowrap" align="flex-start">
+        <ScrollArea type="auto" scrollbars="x">
+          <Group gap="lg" wrap="nowrap" align="flex-start" style={{ paddingBottom: 8 }}>
             {filteredProjects.map(project => (
               <ProjectCard
                 key={project.id}
@@ -104,6 +120,6 @@ export default function DashboardPage({ activeMenu }) {
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
       />
-    </div>
+    </Box>
   );
 }
