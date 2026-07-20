@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Container, Group, Button, Text, ScrollArea } from '@mantine/core';
-import { useAuth } from '../auth/AuthProvider';
+import { Group, Button, Text, ScrollArea, Container } from '@mantine/core';
 import { collection, query, orderBy, onSnapshot, doc, deleteDoc, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import StatsHeader from './StatsHeader';
 import ProjectCard from './ProjectCard';
 import NewProjectModal from './NewProjectModal';
 
-export default function DashboardPage() {
+export default function DashboardPage({ activeMenu }) {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [modalOpened, setModalOpened] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
-  const { logout, user } = useAuth();
 
   useEffect(() => {
     const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
@@ -31,7 +28,6 @@ export default function DashboardPage() {
   }, []);
 
   const handleDeleteProject = async (projectId) => {
-    // Hapus semua task di project ini dulu
     const taskSnap = await getDocs(query(collection(db, 'tasks'), where('projectId', '==', projectId)));
     const deletions = taskSnap.docs.map(d => deleteDoc(doc(db, 'tasks', d.id)));
     await Promise.all(deletions);
@@ -42,63 +38,72 @@ export default function DashboardPage() {
   const urgentTasks = activeTasks.filter(t => t.urgent);
   const doneTasks = tasks.filter(t => t.done);
 
-  const displayTasks = showHistory ? doneTasks : activeTasks;
+  // Filter berdasarkan menu aktif
+  const showHistory = activeMenu === 'history';
+  const filteredProjects = activeMenu === 'projects' ? projects : projects;
+
+  if (activeMenu === 'history' && doneTasks.length === 0) {
+    return (
+      <Container>
+        <Text ta="center" c="dimmed" py="xl">Belum ada task yang selesai.</Text>
+      </Container>
+    );
+  }
 
   return (
-    <Container fluid p="md">
-      {/* Header */}
-      <StatsHeader
-        projectCount={projects.length}
-        activeTaskCount={activeTasks.length}
-        urgentCount={urgentTasks.length}
-      />
+    <div>
+      {/* Stats */}
+      {!showHistory && (
+        <StatsHeader
+          projectCount={projects.length}
+          activeTaskCount={activeTasks.length}
+          urgentCount={urgentTasks.length}
+        />
+      )}
 
       {/* Toolbar */}
       <Group mb="md">
-        <Button leftSection="+" onClick={() => setModalOpened(true)}>
+        <Button leftSection="+" color="blue" onClick={() => setModalOpened(true)}>
           Project Baru
         </Button>
-        <Button variant="outline" onClick={() => setShowHistory(!showHistory)}>
-          {showHistory ? 'Task Aktif' : `Riwayat Selesai (${doneTasks.length})`}
-        </Button>
-        <Button variant="subtle" size="sm" onClick={logout} style={{ marginLeft: 'auto' }}>
-          Logout ({user?.email})
-        </Button>
+        <Text size="sm" c="dimmed">
+          {showHistory
+            ? `Task Selesai (${doneTasks.length})`
+            : `${activeTasks.length} task aktif`}
+        </Text>
+        <Text size="xs" c="dimmed" style={{ marginLeft: 'auto' }}>
+          sync {new Date().toLocaleTimeString('id-ID')}
+        </Text>
       </Group>
 
-      {/* Project Cards Grid */}
-      <ScrollArea>
-        <Group gap="md" wrap="nowrap" align="flex-start">
-          {projects.map(project => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onDelete={handleDeleteProject}
-            />
-          ))}
-        </Group>
-      </ScrollArea>
-
-      {/* Riwayat Selesai Panel */}
-      {showHistory && doneTasks.length > 0 && (
-        <div style={{ marginTop: 20 }}>
-          <Text fw={600} mb="sm">Task yang sudah selesai:</Text>
-          {doneTasks.map(t => (
-            <Text key={t.id} size="sm" c="dimmed" style={{ textDecoration: 'line-through' }}>
-              {t.text} — {projects.find(p => p.id === t.projectId)?.name || 'Unknown'}
+      {/* Content */}
+      {showHistory ? (
+        <div>
+          <Text fw={600} mb="sm" size="lg">Riwayat Selesai</Text>
+          {doneTasks.slice(0, 50).map(t => (
+            <Text key={t.id} size="sm" c="dimmed" style={{ textDecoration: 'line-through' }} mb={4}>
+              {t.text} — <Text span c="gray">{projects.find(p => p.id === t.projectId)?.name || '?'}</Text>
             </Text>
           ))}
         </div>
+      ) : (
+        <ScrollArea>
+          <Group gap="md" wrap="nowrap" align="flex-start">
+            {filteredProjects.map(project => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onDelete={handleDeleteProject}
+              />
+            ))}
+          </Group>
+        </ScrollArea>
       )}
 
       <NewProjectModal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
       />
-
-      <Text size="xs" c="dimmed" ta="right" mt="md">
-        terakhir sync {new Date().toLocaleString('id-ID')}
-      </Text>
-    </Container>
+    </div>
   );
 }
